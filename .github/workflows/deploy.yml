@@ -19,9 +19,15 @@ jobs:
     - run: npm ci
     - run: npm run build
     - name: Deploy to Firebase Hosting
+      if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' && secrets.FIREBASE_PROJECT_ID != '' }}
       uses: FirebaseExtended/action-hosting-deploy@v0
       with:
-        repoToken: \${{ secrets.GITHUB_TOKEN }}
-        firebaseServiceAccount: \${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        repoToken: ${{ secrets.GITHUB_TOKEN }}
+        firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         channelId: live
-        projectId: your-firebase-project-id
+        projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+
+    - name: Skip deploy (missing Firebase secrets)
+      if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT == '' || secrets.FIREBASE_PROJECT_ID == '' }}
+      run: |
+        echo "Firebase deploy skipped: FIREBASE_SERVICE_ACCOUNT or FIREBASE_PROJECT_ID is not set."
