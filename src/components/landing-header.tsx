@@ -108,7 +108,7 @@ export function LandingHeader() {
           <div className="hidden md:block">{renderAuthButton()}</div>
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Button variant="ghost" size="icon" className="md:hidden" suppressHydrationWarning={true}>
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
